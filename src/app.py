@@ -56,7 +56,7 @@ def create_gradient_gauge(value, max_value = 100, title = 'Fear & Greed Index', 
 
     ax.plot([needle_angle_rad, needle_angle_rad], [0, 0.7], color='black', linewidth = 3, zorder=3)
 
-    center_circle = Circle((0, 0), 0.1, facecolor = 'white', endgecolor = 'black', zorder=4)
+    center_circle = Circle((0, 0), 0.1, facecolor = 'white', edgecolor = 'black', zorder=4)
     ax.add_patch(center_circle)
     
     ax.text(0, -0.15, f"{value:.1f}", ha = 'center', va='center', fontsize=10, weight='bold', color='black', zorder = 5)
