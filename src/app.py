@@ -29,7 +29,7 @@ def load_data():
 
 #create gradient gauge
 def create_gradient_gauge(value, max_value = 100, title = 'Fear & Greed Index', cmap_name='RdYlGn'):
-    fig, ax = plt.subplots(figsize=(8,8), subplot_kw={'projection': 'polar'})
+    fig, ax = plt.subplots(figsize=(3,3), subplot_kw={'projection': 'polar'})
     start_angle_deg = -135
     end_angle_deg = 135
     total_angle_deg = end_angle_deg - start_angle_deg
@@ -54,24 +54,34 @@ def create_gradient_gauge(value, max_value = 100, title = 'Fear & Greed Index', 
     normalized_value = value/max_value
     needle_angle_rad = start_angle_rad + normalized_value * total_angle_rad
 
-    ax.plot([0, needle_angle_rad], [0, 0.8], color='black', linewidth = 3, zorder=3)
+    ax.plot([needle_angle_rad, needle_angle_rad], [0, 0.7], color='black', linewidth = 3, zorder=3)
+
+    center_circle = Circle((0, 0), 0.1, facecolor = 'white', endgecolor = 'black', zorder=4)
+    ax.add_patch(center_circle)
     
-    ax.text(0, -0.15, f"{value:.1f}", ha = 'center', va='center', fontsize=20, weight='bold', color='black')
-    ax.set_theta_zero_location("N")
+    ax.text(0, -0.15, f"{value:.1f}", ha = 'center', va='center', fontsize=10, weight='bold', color='black', zorder = 5)
+
+    ax.set_theta_offset(np.pi/2)
     ax.set_theta_direction(-1)
+    ax.set_theta_zero_location("N")
+
     ax.set_rticks([])
     ax.set_xticks(np.linspace(start_angle_rad, end_angle_rad, 5))
-    ax.set_xticklabels([0, max_value/4, max_value/2, 3*max_value/4, max_value], fontsize=10)
-    ax.set_ylim(0, 1)
+    ax.set_xticklabels(['0', '25', '50', '75', '100'], fontsize=8)
+    ax.set_ylim(0, 1.2)
     ax.set_frame_on(False)
-    ax.set_title(title, va='bottom', fontsize=16)
+    ax.set_title(title, va='bottom', fontsize=12, pad = 20)
+    plt.tight_layout()
     
     return fig
 
 def main():
     st.title('Check Fear & Greed Index')
-    fig = create_gradient_gauge(42, max_value=100, title='Fear & Greed Index', cmap_name='RdYlGn')
-    st.pyplot(fig)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        fig = create_gradient_gauge(42, max_value=100, title='Fear & Greed Index', cmap_name='RdYlGn')
+        st.pyplot(fig)
 
 if __name__=='__main__':
     main()
