@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 
 #configure the page
 st.set_page_config(
-    page_title='Check Fear & Greed Dashboard',
+    page_title='Check Fear & Greed Index',
     layout='wide',
     page_icon=':memo:'
 )
@@ -20,7 +20,7 @@ def get_database_connection():
     database_url = 'postgresql+psycopg2://admin:admin@localhost:5432/Dashboard'
     return create_engine(database_url)
 
-#loat the data from the database
+#load the data from the database
 def load_data():
     engine = get_database_connection()
     query = 'SELECT * FROM fear_greed_index ORDER BY date_index ASC'
@@ -53,7 +53,9 @@ def create_gradient_gauge(value, max_value = 100, title = 'Fear & Greed Index', 
     
     normalized_value = value/max_value
     needle_angle_rad = start_angle_rad + normalized_value * total_angle_rad
+
     ax.plot([0, needle_angle_rad], [0, 0.8], color='black', linewidth = 3, zorder=3)
+    
     ax.text(0, -0.15, f"{value:.1f}", ha = 'center', va='center', fontsize=20, weight='bold', color='black')
     ax.set_theta_zero_location("N")
     ax.set_theta_direction(-1)
@@ -63,6 +65,13 @@ def create_gradient_gauge(value, max_value = 100, title = 'Fear & Greed Index', 
     ax.set_ylim(0, 1)
     ax.set_frame_on(False)
     ax.set_title(title, va='bottom', fontsize=16)
-    plt.show()
+    
+    return fig
 
-create_gradient_gauge(42, max_value=100, title='Fear & Greed Index', cmap_name='RdYlGn')
+def main():
+    st.title('Check Fear & Greed Index')
+    fig = create_gradient_gauge(42, max_value=100, title='Fear & Greed Index', cmap_name='RdYlGn')
+    st.pyplot(fig)
+
+if __name__=='__main__':
+    main()
