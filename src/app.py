@@ -44,17 +44,17 @@ def create_gauge(value, title):
         title = {'text': title},
         domain = {'x': [0, 1], 'y': [0, 1]},
         gauge = {
-            'axis': {'range': [0, 100]},
-            'bar': {'color': 'lightblue'},
+            'axis': {'range': [0, 100], 'tickwidth': 1},
+            'bar': {'color': 'rgba(0,0,0,0)'},
             'bgcolor': 'white',
-            'borderwidth': 0.5,
-            'bordercolor': "#00ffea",
+            'borderwidth': 2,
+            'bordercolor': "#9CA0A0",
             'steps': [
-                {'range': [0, 25], 'color': 'red'},
-                {'range': [25, 50], 'color': 'orange'},
-                {'range': [50, 75], 'color': 'yellow'},
+                {'range': [0, 24], 'color': 'red'},
+                {'range': [25, 49], 'color': 'orange'},
+                {'range': [50, 74], 'color': 'yellow'},
                 {'range': [75, 100], 'color': 'lightgreen'}],
-                'threshold': {'line': {'color': "#6200ff", 'width': 3}, 'thickness': 0.75, 'value': value}},
+            'threshold': {'line': {'color': "#090213", 'width': 4}, 'thickness': 0.75, 'value': value}, 'shape': 'angular'},
     ))
 
     fig.update_layout(
@@ -89,7 +89,7 @@ def main():
     st.sidebar.write(f'Crypto Fear & Greed Index is {fgindex}, and it tells you to {call}\n Should you?')
 
     col1, col2, col3 = st.columns([1, 2, 1])
-    with col1:
+    with col2:
         fig = create_gauge(42, 'Fear & Greed Index')
         st.plotly_chart(fig, use_container_width=True)
 
