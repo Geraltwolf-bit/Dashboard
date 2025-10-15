@@ -44,21 +44,16 @@ def create_gauge(value, title):
         title = {'text': title},
         domain = {'x': [0, 1], 'y': [0, 1]},
         gauge = {
-            'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': 'darkblue'},
-            'bar': {'color': 'darkblue'},
+            'axis': {'range': [0, 100]},
+            'bar': {'color': 'lightblue'},
             'bgcolor': 'white',
-            'borderwidth': 2,
-            'bordercolor': 'gray',
+            'borderwidth': 0.5,
+            'bordercolor': '#ff0000',
             'steps': [
                 {'range': [0, 25], 'color': 'red'},
                 {'range': [25, 50], 'color': 'orange'},
                 {'range': [50, 75], 'color': 'yellow'},
                 {'range': [75, 100], 'color': 'lightgreen'}],
-                'threshold': {
-                    'line': {'color': 'red', 'width': 4},
-                    'thickness': 0.75,
-                    'value': value
-                }
         }
     ))
 
@@ -75,12 +70,23 @@ def make_call(value):
     else:
         return 'sell.'
 
+def make_index(value):
+    if value <= 24:
+        return 'Extreme Fear'
+    elif value <= 49:
+        return 'Fear'
+    elif value == 50:
+        return 'Neutral'
+    elif value <= 74:
+        return 'Greed'
+    elif value <= 100:
+        return 'Extreme Greed'
+
 def main():
     st.title('Check Fear & Greed Index')
     call = make_call(42)
-    st.sidebar.write(f'Fear & Greed Index tells you to {call}')
-    st.write('')
-    st.write('Should you?')
+    fgindex = make_index(42)
+    st.sidebar.write(f'Crypto Fear & Greed Index is {fgindex} and tells you to {call}\n Should you?')
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
