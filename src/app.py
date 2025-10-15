@@ -48,13 +48,13 @@ def create_gauge(value, title):
             'bar': {'color': 'lightblue'},
             'bgcolor': 'white',
             'borderwidth': 0.5,
-            'bordercolor': '#ff0000',
+            'bordercolor': "#00ffea",
             'steps': [
                 {'range': [0, 25], 'color': 'red'},
                 {'range': [25, 50], 'color': 'orange'},
                 {'range': [50, 75], 'color': 'yellow'},
                 {'range': [75, 100], 'color': 'lightgreen'}],
-        }
+                'threshold': {'line': {'color': "#6200ff", 'width': 3}, 'thickness': 0.75, 'value': value}},
     ))
 
     fig.update_layout(
@@ -86,7 +86,7 @@ def main():
     st.title('Check Fear & Greed Index')
     call = make_call(42)
     fgindex = make_index(42)
-    st.sidebar.write(f'Crypto Fear & Greed Index is {fgindex} and tells you to {call}\n Should you?')
+    st.sidebar.write(f'Crypto Fear & Greed Index is {fgindex}, and it tells you to {call}\n Should you?')
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
