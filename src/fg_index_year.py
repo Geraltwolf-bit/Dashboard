@@ -39,22 +39,3 @@ def get_fg_index_year(
     except requests.exceptions.RequestException as e:
         logger.error("Error getting Fear & Greed data: %s", e)
         return None
-    
-def scatter_index(df):
-    category_order = ['Extreme Fear', 'Fear', 'Neutral', 'Greed', 'Extreme Greed']
-    colors = ['green', 'blue', 'gray', 'orange', 'red']
-    df['month'] = pd.to_datetime(df['index_date'])
-    df['month_key'] = df['month'].dt.to_period('M')
-    monthly_average = df.groupby(['month_key', 'fg_index_str']).size().unstack(fill_value=0)
-    monthly_average = monthly_average[category_order]
-    plt.figure(figsize=(12, 8))
-    ax = monthly_average.plot(kind='bar', stacked=False, color=colors, width=0.8, ax=plt.gca())
-    labels=[period.strftime('%b %Y') for period in monthly_average.index]
-    ax.set_xticklabels(labels)
-    plt.xlabel("Month", fontsize=12)
-    plt.ylabel('Number of days', fontsize=12)
-    plt.title("Fear & Greed Index distribution by month", fontsize=14, fontweight='bold')
-    plt.legend(title='Classification', bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
