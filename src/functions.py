@@ -1,4 +1,8 @@
 import plotly.graph_objects as go
+import streamlit as st
+import altair as alt
+from fg_index_year import get_fg_index_year
+from constants import fg_year_url
 
 def format_timedelta(td_series):
     """Convert timedelta to readable format '00 hours and 00 minutes' """
@@ -9,19 +13,19 @@ def format_timedelta(td_series):
 
 def index_recommendation(value):
     if value == 'Fear':
-        return 'to buy.'
+        return 'to buy'
     elif value == 'Extreme Fear':
-        return 'to buy.'
+        return 'to buy'
     elif value == 'Greed':
-        return 'to sell.'
+        return 'to sell'
     elif value == 'Extreme Greed':
-        return 'to sell.'
+        return 'to sell'
     
 import plotly.graph_objects as go
 import plotly.express as px
 import numpy as np
 
-def create_gauge(value):
+def create_gauge(value, title_text="Fear & Greed Index"):
     """
     Create a gauge with smooth gradient
     """
@@ -39,32 +43,58 @@ def create_gauge(value):
             r = int(255 * (1 - (i - 50) / 50))
             g = 255
             b = 0
-        
         color = f'rgb({r}, {g}, {b})'
         steps.append({'range': [i, i+1], 'color': color})
-    
     fig = go.Figure(go.Indicator(
         mode = "gauge+number",
         value = value,
         domain = {'x': [0, 1], 'y': [0, 1]},
-        number = {'font': {'size': 40}},
+        title={'text': title_text, 'font': {'size': 15}},
+        number = {'font': {'size': 18, 'color':  'black'},
+                  'suffix': '',
+                  'valueformat': 'd'},
         gauge = {
-            'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "black"},
-            'bar': {'color': "black", 'thickness': 0.15},
+            'axis': {'range': [0, 100],
+                     'showticklabels': False,
+                     'ticks': '',
+                     'tickwidth': 0},
+            'bar': {'color': "rgba(0,0,0,0)"},
             'bgcolor': "white",
-            'borderwidth': 2,
+            'borderwidth': 0,
             'bordercolor': "gray",
             'steps': steps,
             'threshold': {
-                'line': {'color': "black", 'width': 4},
-                'thickness': 0.75,
+                'line': {'color': "black", 'width': 3},
+                'thickness': 0.4,
                 'value': value
             }
         }
     ))
     fig.update_layout(
-        height=400,
-        margin=dict(l=20, r=20, t=80, b=20),
-        paper_bgcolor='white'
+        title={
+            'text': title_text,
+            'y': 0.95,
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'size': 15}
+        },
+        height=150,
+        margin=dict(l=20, r=20, t=55, b=20),
+        paper_bgcolor='white',
+        font={'family': 'Arial'}
     ) 
     return fig
+
+def create_chart(df):
+    chart = alt.Chart(df).mark_line(
+        color='orange',
+        strokeWidth=3
+    ).encode(
+        x=alt.X('index_date:T', title='Date'),
+        y=alt.Y('fg_index_num:Q', title='Fear&Greed Index', scale=alt.Scale(domain=[0,100])),
+        tooltip=['index_date', 'fg_index_num', 'fg_index_str']
+    ).properties(
+        height=300
+    ).interactive()
+    return chart
