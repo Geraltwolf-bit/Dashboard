@@ -2,7 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
+import matplotlib.pyplot as plt
 from datetime import datetime
+
+from hash_btc import hashrate, bitcoin, merge_hash_btc
 from fear_greed_index import get_df_fg_index_today
 from fg_index_year import get_fg_index_year
 from functions import index_recommendation, create_gauge, create_chart
@@ -19,7 +22,7 @@ with st.sidebar:
     st.title(f"It tells you... {recommendation}")
     st.title("But should you?")
 
-col1, col2, col3 = st.columns([3, 1, 1])
+col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
     st.header("Current index:")
@@ -37,3 +40,10 @@ with col1:
     df = get_fg_index_year(fg_year_url)
     chart = create_chart(df)
     st.altair_chart(chart, use_container_width=True)
+
+with col2:
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.header("Bitcoin Price & Hash Rate")
+    fig = create_hash_btc_chart(df)
+    st.plotly_chart(fig, use_container_width=True)

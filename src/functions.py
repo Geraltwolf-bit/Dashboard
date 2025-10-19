@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 import streamlit as st
 import altair as alt
+import pandas as pd
 from fg_index_year import get_fg_index_year
 from constants import fg_year_url
 
