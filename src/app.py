@@ -5,11 +5,11 @@ import altair as alt
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-from hash_btc import hashrate, bitcoin, merge_hash_btc
 from fear_greed_index import get_df_fg_index_today
 from fg_index_year import get_fg_index_year
 from functions import index_recommendation, create_gauge, create_chart
 from constants import fg_today_url, fg_year_url
+from stockmarket import get_raw_stockmarket_data, get_yearly_stockmarket_data_for_dashboard
 
 with st.sidebar:
     fg_index = get_df_fg_index_today(fg_today_url)
@@ -42,8 +42,7 @@ with col1:
     st.altair_chart(chart, use_container_width=True)
 
 with col2:
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.header("Bitcoin Price & Hash Rate")
-    fig = create_hash_btc_chart(df)
-    st.plotly_chart(fig, use_container_width=True)
+    st.header('Stockmarket trend')
+    raw_sm = get_raw_stockmarket_data()
+    sm = get_yearly_stockmarket_data_for_dashboard(raw_sm)
+    st.line_chart(sm, x='date', y='stockmarket_value')

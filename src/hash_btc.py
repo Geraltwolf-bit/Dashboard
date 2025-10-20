@@ -36,10 +36,3 @@ def hashrate():
     df = df.drop(columns='timestamp')
     df = df.sort_values('date').reset_index(drop = True)
     return df
-
-def merge_hash_btc(hash, btc):
-    btc = bitcoin()
-    hash = hashrate()
-    df = pd.merge(btc, hash, on = 'date', how='left')
-    df = df.dropna()
-    return df
