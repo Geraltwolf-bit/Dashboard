@@ -21,7 +21,7 @@ with col1:
     sm_month = get_montly_stockmarket_trend(raw_sm)
     month_chart = alt.Chart(sm_month).mark_arc(innerRadius=45, cornerRadius=25).encode(
         theta = 'stockmarket_value:Q',
-        color = alt.value('#29b5e8')
+        color = alt.value("#dfee0b")
     )
     st.altair_chart(month_chart)
       
