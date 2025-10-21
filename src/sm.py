@@ -27,11 +27,18 @@ with col1:
       
 with col2:
     sm = get_yearly_stockmarket_data_for_dashboard(raw_sm)
-    st.area_chart(sm, x = 'date', y = 'stockmarket_value')
+    area_chart = alt.Chart(sm).mark_area(
+        color = 'rgba(41, 181, 232, 0.3)',
+        line = {'color': 'darkblue'}
+    ).encode(
+        x='date:T',
+        y='stockmarket_value:Q'
+    )
+    st.altair_chart(area_chart, use_container_width=True)
 
 with col3:
     st.header('Yearly trend')
-    sm_year = get_montly_stockmarket_trend(raw_sm)
+    sm_year = get_yearly_stockmarket_trend(raw_sm)
     year_chart = alt.Chart(sm_year).mark_arc(innerRadius=45, cornerRadius=25).encode(
         theta = 'stockmarket_value:Q',
         color = alt.value("#3fe829"))
