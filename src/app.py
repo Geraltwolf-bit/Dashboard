@@ -42,7 +42,8 @@ with col1:
     st.altair_chart(chart, use_container_width=True)
 
 with col2:
+    st.header("Stockmarket value")
     st.header('Stockmarket trend')
     raw_sm = get_raw_stockmarket_data()
     sm = get_yearly_stockmarket_data_for_dashboard(raw_sm)
-    st.line_chart(sm, x='date', y='stockmarket_value')
+    st.area_chart(sm, x='date', y='stockmarket_value')

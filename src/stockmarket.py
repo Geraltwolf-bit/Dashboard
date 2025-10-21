@@ -1,6 +1,8 @@
 import yfinance as yf
 import pandas as pd
 import logging
+from datetime import datetime
+from typing import Union
 
 from typing import Union
 
@@ -25,9 +27,6 @@ def get_raw_stockmarket_data(ticker_name: str="^GSPC", period: str="1y") -> Unio
     except Exception as e:
         logger.error(f"Error getting stock market data: %s", e)
         return None
-
-import pandas as pd
-from datetime import datetime
 
 def get_yearly_stockmarket_trend(stockmarket_data: pd.DataFrame) -> Union[pd.DataFrame, None]:
     """
@@ -57,9 +56,6 @@ def get_yearly_stockmarket_trend(stockmarket_data: pd.DataFrame) -> Union[pd.Dat
         logger.info("Error preprocessing stock market data: %s", e)
         return None
 
-import pandas as pd
-from datetime import datetime
-
 def get_montly_stockmarket_trend(stockmarket_data: pd.DataFrame) -> Union[pd.DataFrame, None]:
     """
     Converts the raw stockmarket pd.DataFrame into a pd.DataFrame that contains:
@@ -87,10 +83,6 @@ def get_montly_stockmarket_trend(stockmarket_data: pd.DataFrame) -> Union[pd.Dat
     except Exception as e:
         logger.info("Error preprocessing stock market data: %s", e)
         return None
-
-import pandas as pd
-from datetime import datetime
-from typing import Union
 
 def get_yearly_stockmarket_data_for_dashboard(stockmarket_data: pd.DataFrame) -> Union[pd.DataFrame, None]:
     """
